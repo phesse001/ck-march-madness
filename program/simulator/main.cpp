@@ -16,5 +16,5 @@ int main(int argc, char *argv[])
   //cout << env << endl;
 	//int home_field_advantage = std::stoi(argv[1]);
 	//bool apply_scaling = argv[2];
-    run(7,true);
+    run(7,true,argv[1]);
 }
