@@ -4,5 +4,16 @@
   "data_alias": "march-madness",
   "data_name": "march-madness",
   "dict": {
+    "shared": "git",
+    "sync": "yes",
+    "url": "https://github.com/phesse001/marchmadness",
+    "repo_deps": [
+      {
+        "repo_uoa": "ck-autotuning"
+      },
+      {
+        "repo_uoa": "ck-math"
+      }
+    ]
   }
 }

@@ -20,9 +20,13 @@ int main(int argc, char *argv[])
   //cout << env << endl;
 	//int home_field_advantage = std::stoi(argv[1]);
 	//bool apply_scaling = argv[2];
+<<<<<<< HEAD
 	//int home_field_advantage = argv[1];
 	//bool apply_scaling = argv[2];
 	//run(home_field_advantage,apply_scaling);
 
     run(home_field_advantage,apply_scaling);
+=======
+    run(7,true,argv[1]);
+>>>>>>> b6576fd86c13f9b949ea89dd05ff7027ee8d5cd6
 }
