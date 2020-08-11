@@ -27,9 +27,10 @@ const double HIGH_MARGIN_SCALE = .8;
 double pSum;
 
 
-void run(int home_field_advantage, bool apply_scaling){
-    createTeams(string("../NCAABasketballTeams.txt"));
-    loadGames(string("../NCAABasketballGames.txt"), home_field_advantage, apply_scaling);
+void run(int home_field_advantage, bool apply_scaling, char* name){
+
+    createTeams(string(name)+string("/NCAABasketballTeams.txt"));
+    loadGames(string(name)+string("/NCAABasketballGames.txt"), home_field_advantage, apply_scaling);
     solutionVector = gameMatrix.lu().solve(scores);
 
     map<int, Team*>::iterator itr;

@@ -6,6 +6,14 @@
   "dict": {
     "shared": "git",
     "sync": "yes",
-    "url": "https://github.com/phesse001/marchmadness"
+    "url": "https://github.com/phesse001/marchmadness",
+    "repo_deps": [
+      {
+        "repo_uoa": "ck-autotuning"
+      },
+      {
+        "repo_uoa": "ck-math"
+      }
+    ]
   }
 }
