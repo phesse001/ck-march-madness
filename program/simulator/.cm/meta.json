@@ -48,6 +48,8 @@
   },
 
   "run_vars": {
+    "home_field_advantage":7,
+    "apply_scaling":1
   },
   "source_files": [
     "Simulator.cpp",
