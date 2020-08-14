@@ -40,6 +40,9 @@
       ],
       "ignore_return_code": "no",
       "run_time": {
+        "post_process_via_ck": {
+          "script_name": "postprocess"
+        },
         "run_cmd_main": "$#BIN_FILE#$ $#dataset_path#$",
         "run_cmd_out1": "stdout.log",
         "run_cmd_out2": "stderr.log",
@@ -55,8 +58,13 @@
   },
 
   "run_vars": {
-    "home_field_advantage":7,
-    "apply_scaling":1
+    "statistical_repetition_number":3,
+    "home_field_advantage_1":0,
+    "apply_scaling_1":1,
+    "home_field_advantage_2":2,
+    "apply_scaling_2":1,
+    "home_field_advantage_3":4,
+    "apply_scaling_3":1
   },
   "source_files": [
     "Simulator.cpp",
@@ -68,5 +76,8 @@
     "program",
     "lang-cpp"
   ],
-  "target_file": "a"
+  "target_file": "a",
+  "iterations": -1,
+  "statistical_repetition_number":3
+
 }
