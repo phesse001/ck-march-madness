@@ -58,7 +58,6 @@
   },
 
   "run_vars": {
-    "statistical_repetition_number":3,
     "home_field_advantage_1":0,
     "apply_scaling_1":1,
     "home_field_advantage_2":2,
