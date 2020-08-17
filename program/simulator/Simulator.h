@@ -21,7 +21,7 @@ void createTeams(std::string teamData);
 
 void loadGames(std::string gameData, int flag, bool apply_scaling);
 
-void run(int flag, bool apply_scaling, char* name);
+void run(int flag, bool apply_scaling, char* dataset_path_name);
 
 void populateMatrix(int team_1_Id, int team_2_Id, int team_1_score, int team_2_score, bool apply_scaling);
 
@@ -56,6 +56,10 @@ int getNumTeams();
 int getNumGamesPlayed();
 
 Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> getGameMatrix();
+
+void reset();
+
+std::vector<Team*> getTeamCollection();
 
 
 #endif //MARCH_MADNESS_SIMULATOR_SIMULATOR_H

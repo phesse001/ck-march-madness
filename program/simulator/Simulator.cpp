@@ -27,10 +27,10 @@ const double HIGH_MARGIN_SCALE = .8;
 double pSum;
 
 
-void run(int home_field_advantage, bool apply_scaling, char* name){
+void run(int home_field_advantage, bool apply_scaling, char* dataset_path_name){
 
-    createTeams(string(name)+string("/NCAABasketballTeams.txt"));
-    loadGames(string(name)+string("/NCAABasketballGames.txt"), home_field_advantage, apply_scaling);
+    createTeams(string(dataset_path_name)+string("NCAABasketballTeams.txt"));
+    loadGames(string(dataset_path_name)+string("NCAABasketballGames.txt"), home_field_advantage, apply_scaling);
     solutionVector = gameMatrix.lu().solve(scores);
 
     map<int, Team*>::iterator itr;
@@ -169,6 +169,23 @@ int getNumGamesPlayed()
 Matrix<double, Dynamic, Dynamic> getGameMatrix()
 {
     return gameMatrix;
+}
+
+std::vector<Team*> getTeamCollection()
+{
+    return teamCollection;
+}
+
+void reset()
+{
+    scores.resize(1,1);
+    teamCollection.clear();
+    resultVector.clear();
+    solutionVector.resize(1,1);
+    teamMap.clear();
+    numGamesPlayed = 0;
+    scores.resize(numTeams,1);
+    solutionVector.resize(numTeams,1);
 }
 
 
