@@ -24,9 +24,14 @@ def ck_postprocess(i):
     correct = []
     file_1_array = []
 
+    #get CK entry with the paper template
+    r=ck.access({'action':'find', 'module_uoa':'paper', 'data_uoa':'ck-march-madness'})
+    if r['return']>0: return r # use standard error handling in the CK
+    paper_path=r['path']
+
     #copy tex/bib files to temp
-    os.system("cp " + misc['path'] + "/SOTF.bib " + misc['path'] + "/" + misc['tmp_dir'])
-    os.system("cp " + misc['path'] + "/SOTF.tex " + misc['path'] + "/" + misc['tmp_dir'])
+    os.system("cp " + paper_path + "/SOTF.bib " + misc['path'] + "/" + misc['tmp_dir'])
+    os.system("cp " + paper_path + "/SOTF.tex " + misc['path'] + "/" + misc['tmp_dir'])
 
     #create table
     with open(correct_path, 'r') as correct_data:
