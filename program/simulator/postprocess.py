@@ -54,7 +54,9 @@ def ck_postprocess(i):
             output.write('\\hline\n')
         output.write('\\end{tabular}\n')
 
-	#compiile files
+	#compile file
+    os.system("pwd")
+    os.system("ls")
     os.system("pdflatex SOTF")
     os.system("bibtex SOTF")
     os.system("pdflatex SOTF")
