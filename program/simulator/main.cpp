@@ -10,8 +10,7 @@
 
 int main(int argc, char *argv[])
 {
-/*
-  char *var0 = getenv("statistical_repetition_number");
+  /*
   int srn = std::stoi(var0);
   while(srn > 0)
   {
@@ -42,10 +41,11 @@ int main(int argc, char *argv[])
   srn -= 1;
   }
   */
+const int
 char *var1 = getenv("home_field_advantage_1");
 char *var2 = getenv("apply_scaling_1");
 int home_field_advantage = std::stoi(var1);
 int apply_scaling = std::stoi(var2);
 run(home_field_advantage,apply_scaling,argv[1]);
-
+//setenv("home_field_advantage_1", "1", 1);
 }
