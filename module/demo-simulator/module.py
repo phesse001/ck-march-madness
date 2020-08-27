@@ -34,7 +34,7 @@ def init(i):
 ##############################################################################
 # TBD: action description
 
-def generate_paper(i):
+def explore(i):
     """
     Input:  {
             }
@@ -49,6 +49,7 @@ def generate_paper(i):
     r=ck.access({'action':'find', 'module_uoa':'program', 'data_uoa':'simulator'})
     if r['return']>0: return r # use standard error handling in the CK
     program_path=r['path']
+
     #change to tmp directory where all run files are
     os.chdir(program_path + "/tmp")
 
@@ -91,7 +92,34 @@ def generate_paper(i):
             output.write('\\hline\n')
         output.write('\\end{tabular}\n')
 
-  #compile files
+    return {'return':0}
+
+##############################################################################
+# generate paper
+
+def generate_paper(i):
+    """
+    Input:  {
+            }
+
+    Output: {
+              return       - return code =  0, if successful
+                                         >  0, if error
+              (error)      - error text if return > 0
+            }
+
+    """
+
+    import os
+
+    r=ck.access({'action':'find', 'module_uoa':'program', 'data_uoa':'simulator'})
+    if r['return']>0: return r # use standard error handling in the CK
+    program_path=r['path']
+
+    #change to tmp directory where all run files are
+    os.chdir(program_path + "/tmp")
+
+    #compile files
     os.system("pdflatex SOTF")
     os.system("bibtex SOTF")
     os.system("pdflatex SOTF")
