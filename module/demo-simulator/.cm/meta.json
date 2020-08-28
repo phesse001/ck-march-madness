@@ -1,0 +1,9 @@
+{
+  "actions": {
+    "explore": {}, 
+    "generate_paper": {
+      "desc": "generate paper"
+    }
+  }, 
+  "actions_redirect": {}
+}
