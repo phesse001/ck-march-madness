@@ -41,7 +41,6 @@ int main(int argc, char *argv[])
   srn -= 1;
   }
   */
-const int
 char *var1 = getenv("home_field_advantage_1");
 char *var2 = getenv("apply_scaling_1");
 int home_field_advantage = std::stoi(var1);
