@@ -1,6 +1,6 @@
 {
   "dataset_files": [
-    "NCAABasketballGames.txt"
+    "games.txt"
 ],
 
   "tags": [

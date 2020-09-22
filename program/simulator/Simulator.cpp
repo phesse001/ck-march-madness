@@ -29,8 +29,8 @@ double pSum;
 
 void run(int home_field_advantage, bool apply_scaling, char* dataset_path_name){
 
-    createTeams(string(dataset_path_name)+string("NCAABasketballTeams.txt"));
-    loadGames(string(dataset_path_name)+string("NCAABasketballGames.txt"), home_field_advantage, apply_scaling);
+    createTeams(string(dataset_path_name)+string("teams.txt"));
+    loadGames(string(dataset_path_name)+string("games.txt"), home_field_advantage, apply_scaling);
     solutionVector = gameMatrix.lu().solve(scores);
 
     map<int, Team*>::iterator itr;
