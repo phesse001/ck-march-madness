@@ -46,6 +46,42 @@ def explore(i):
             }
 
     """
+    r=ck.access({'action':'compile', 'module_uoa':'program', 'data_uoa':'simulator'})
+    if r['return']>0: return r # use standard error handling in the CK
+
+    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator'})
+    if r['return']>0: return r # use standard error handling in the CK
+
+    os.system("cp /home/patrick/CK/march-madness/program/simulator/tmp/stdout.log /home/patrick/CK/march-madness/program/simulator/tmp/stdout1.log")
+
+    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':'4'})
+    if r['return']>0: return r # use standard error handling in the CK
+
+    os.system("cp /home/patrick/CK/march-madness/program/simulator/tmp/stdout.log /home/patrick/CK/march-madness/program/simulator/tmp/stdout2.log")
+
+    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':'8'})
+    if r['return']>0: return r # use standard error handling in the CK
+
+    os.system("cp /home/patrick/CK/march-madness/program/simulator/tmp/stdout.log /home/patrick/CK/march-madness/program/simulator/tmp/stdout3.log")
+
+    return {'return':0}
+##############################################################################
+# generate paper
+
+def generate_paper(i):
+    """
+    Input:  {
+            }
+
+    Output: {
+              return       - return code =  0, if successful
+                                         >  0, if error
+              (error)      - error text if return > 0
+            }
+
+    """
+
+
     r=ck.access({'action':'find', 'module_uoa':'program', 'data_uoa':'simulator'})
     if r['return']>0: return r # use standard error handling in the CK
     program_path=r['path']
@@ -91,33 +127,6 @@ def explore(i):
             output.write('{} & {}\\\\\n'.format(correct[x], file_1_array[x]))
             output.write('\\hline\n')
         output.write('\\end{tabular}\n')
-
-    return {'return':0}
-
-##############################################################################
-# generate paper
-
-def generate_paper(i):
-    """
-    Input:  {
-            }
-
-    Output: {
-              return       - return code =  0, if successful
-                                         >  0, if error
-              (error)      - error text if return > 0
-            }
-
-    """
-
-    import os
-
-    r=ck.access({'action':'find', 'module_uoa':'program', 'data_uoa':'simulator'})
-    if r['return']>0: return r # use standard error handling in the CK
-    program_path=r['path']
-
-    #change to tmp directory where all run files are
-    os.chdir(program_path + "/tmp")
 
     #compile files
     os.system("pdflatex SOTF")
