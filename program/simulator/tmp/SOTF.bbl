@@ -1,0 +1,45 @@
+\begin{thebibliography}{1}
+
+\bibitem{ITD}
+Carl Boettiger.
+\newblock An introduction to docker for reproducible research, with examples
+  from the {R} environment.
+\newblock {\em CoRR}, abs/1410.0846, 2014.
+
+\bibitem{CKTS}
+G.~{Fursin}, A.~{Lokhmotov}, and E.~{Plowman}.
+\newblock Collective knowledge: Towards r d sustainability.
+\newblock In {\em 2016 Design, Automation Test in Europe Conference Exhibition
+  (DATE)}, pages 864--869, 2016.
+
+\bibitem{ctuning/ck}
+Grigori Fursin.
+\newblock Collective knowledge framework (ck).
+\newblock 2017.
+
+\bibitem{ctuning/feat}
+Grigori Fursin.
+\newblock Ck features.
+\newblock 2018.
+
+\bibitem{DPCK}
+Grigori Fursin.
+\newblock Demonstrating portable and customizable ck benchmarking workflows.
+\newblock 2019.
+
+\bibitem{ctuningPW}
+Grigori Fursin.
+\newblock Portable workflows.
+\newblock 2019.
+
+\bibitem{CROP}
+Grigori Fursin, Herve Guillou, and Nicolas Essayan.
+\newblock Codereef: an open platform for portable mlops, reusable automation
+  actions and reproducible benchmarking, 2020.
+
+\bibitem{aboutCK}
+Michel Steuwer.
+\newblock Ck: Collective knowledge.
+\newblock 2017.
+
+\end{thebibliography}
