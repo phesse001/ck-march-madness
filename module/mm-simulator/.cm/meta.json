@@ -1,6 +1,8 @@
 {
   "actions": {
-    "explore": {}, 
+    "run": {
+      "desc":"runs march madness program with three sets of inputs"
+    }, 
     "generate_paper": {
       "desc": "generate paper"
     }

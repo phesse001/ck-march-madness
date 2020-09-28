@@ -32,9 +32,9 @@ def init(i):
     return {'return':0}
 
 ##############################################################################
-# TBD: action description
+# runs march madness program with three sets of inputs
 
-def explore(i):
+def run(i):
     """
     Input:  {
             }
@@ -46,6 +46,25 @@ def explore(i):
             }
 
     """
+    action=i['action']     # CK will substitute 'action' with {action name}
+    module=i['module_uoa'] # CK will substitute 'module_uoa' with {module name}
+    data=i['data_uoa']     # CK will substitute 'data_uoa' with {my data}
+
+    # Call CK API to load meta description of a given entry
+    # Equivalent to the command line: "ck load {module name}:{data name}"
+    r=ck.access({'action':'load',
+                 'module_uoa':work['self_module_uid'], # Load the UID of a given module
+                 'data_uoa':data})
+    if r['return']>0: return r # Universal error handler in the CK
+
+    meta=r['dict']      # meta of a given entry
+    info=r['info']      # provenance info of this entry
+    path=r['path']      # local path to this entry
+    uoa=r['data_uoa']   # Name of the CK entry if exists. Otherwise UID.
+    uid=r['data_uid']   # Only UID of the entry
+
+
+
     r=ck.access({'action':'compile', 'module_uoa':'program', 'data_uoa':'simulator'})
     if r['return']>0: return r # use standard error handling in the CK
 
@@ -64,8 +83,9 @@ def explore(i):
 
     os.system("cp /home/patrick/CK/march-madness/program/simulator/tmp/stdout.log /home/patrick/CK/march-madness/program/simulator/tmp/stdout3.log")
 
+    #removes duplicate file of stdout1.log
     os.system("rm stdout.log")
-
+    print(i)
     return {'return':0}
 ##############################################################################
 # generate paper
