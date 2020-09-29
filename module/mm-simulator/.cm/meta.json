@@ -5,6 +5,9 @@
     }, 
     "generate_paper": {
       "desc": "generate paper"
+    },
+    "open_notebook":{
+      "desc": "open notebook from experiment run"
     }
   }, 
   "actions_redirect": {}

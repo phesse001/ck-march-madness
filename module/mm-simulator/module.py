@@ -46,25 +46,6 @@ def run(i):
             }
 
     """
-    action=i['action']     # CK will substitute 'action' with {action name}
-    module=i['module_uoa'] # CK will substitute 'module_uoa' with {module name}
-    data=i['data_uoa']     # CK will substitute 'data_uoa' with {my data}
-
-    # Call CK API to load meta description of a given entry
-    # Equivalent to the command line: "ck load {module name}:{data name}"
-    r=ck.access({'action':'load',
-                 'module_uoa':work['self_module_uid'], # Load the UID of a given module
-                 'data_uoa':data})
-    if r['return']>0: return r # Universal error handler in the CK
-
-    meta=r['dict']      # meta of a given entry
-    info=r['info']      # provenance info of this entry
-    path=r['path']      # local path to this entry
-    uoa=r['data_uoa']   # Name of the CK entry if exists. Otherwise UID.
-    uid=r['data_uid']   # Only UID of the entry
-
-
-
     r=ck.access({'action':'compile', 'module_uoa':'program', 'data_uoa':'simulator'})
     if r['return']>0: return r # use standard error handling in the CK
 
@@ -85,7 +66,7 @@ def run(i):
 
     #removes duplicate file of stdout1.log
     os.system("rm stdout.log")
-    print(i)
+
     return {'return':0}
 ##############################################################################
 # generate paper
@@ -168,3 +149,20 @@ def generate_paper(i):
     os.system("pdflatex SOTF")
 
     return {'return':0}
+##############################################################################
+# open notebook from experiment run
+
+def open_notebook(i):
+    """
+    Input:  {
+            }
+
+    Output: {
+              return       - return code =  0, if successful
+                                         >  0, if error
+              (error)      - error text if return > 0
+            }
+
+    """
+    r=ck.access({'action':'run', 'module_uoa':'jnotebook', 'data_uoa':'notebook'})
+    if r['return']>0: return r # use standard error handling in the CK
