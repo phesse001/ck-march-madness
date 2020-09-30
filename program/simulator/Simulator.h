@@ -25,7 +25,7 @@ void run(int flag, bool apply_scaling, char* dataset_path_name);
 
 void populateMatrix(int team_1_Id, int team_2_Id, int team_1_score, int team_2_score, bool apply_scaling);
 
-void constructCorrectVector(std::string filename);
+void construct_correct_vector(std::string correct_file);
 
 void printVector(std::vector<int> vect);
 

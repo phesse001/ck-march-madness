@@ -13,8 +13,8 @@ using namespace Eigen;
 vector<string> labels;
 vector<Team*> teamCollection;
 vector<Team> resultVector;
-vector<int> x_axis;
-vector<int> y_axis;
+vector<int> predicted_ids;
+vector<int> correct_ids;
 map<int, Team*> teamMap;
 Matrix<double, Dynamic, Dynamic> gameMatrix;
 VectorXd scores;
@@ -28,7 +28,7 @@ double pSum;
 
 
 void run(int home_field_advantage, bool apply_scaling, char* dataset_path_name){
-
+    construct_correct_vector(string(dataset_path_name)+string("correct.txt"));
     createTeams(string(dataset_path_name)+string("teams.txt"));
     loadGames(string(dataset_path_name)+string("games.txt"), home_field_advantage, apply_scaling);
     solutionVector = gameMatrix.lu().solve(scores);
@@ -41,9 +41,16 @@ void run(int home_field_advantage, bool apply_scaling, char* dataset_path_name){
 
      sort(resultVector.begin(), resultVector.end());
      vector<Team>::iterator itr2;
+     int count = 0;
      for(itr2 = resultVector.end() - 1; itr2 != resultVector.begin() - 1 ; --itr2){
+        if(count < 64)
+        {
+        predicted_ids.push_back(itr2->getId());           
+        }
         cout << itr2->getId() << itr2->getName() << endl;
+        count += 1;
      }
+
 }
 void createTeams(string teamData) {
     string id, name;
@@ -151,6 +158,21 @@ void populateMatrix(int team1Index, int team2Index, int team_1_score, int team_2
     }
 }
 
+void construct_correct_vector(string correct_file)
+{
+    string id, name;
+    ifstream is(correct_file);
+    if(is.is_open()){
+        while (getline(is, id, ' ')){
+            getline(is, name, '\n');
+            int idNum = stoi(id);
+            correct_ids.push_back(idNum);
+        }
+        is.close();
+    }
+    else cout << "Unable to open file";
+}
+
 map<int, Team*> getTeamMap()
 {
     return teamMap;
@@ -176,16 +198,6 @@ std::vector<Team*> getTeamCollection()
     return teamCollection;
 }
 
-void reset()
-{
-    scores.resize(1,1);
-    teamCollection.clear();
-    resultVector.clear();
-    solutionVector.resize(1,1);
-    teamMap.clear();
-    numGamesPlayed = 0;
-    scores.resize(numTeams,1);
-    solutionVector.resize(numTeams,1);
-}
+
 
 
