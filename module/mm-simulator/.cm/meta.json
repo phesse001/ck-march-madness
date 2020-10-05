@@ -1,14 +1,19 @@
 {
   "actions": {
-    "run": {
-      "desc":"runs march madness program with three sets of inputs"
-    }, 
     "generate_paper": {
       "desc": "generate paper"
     },
-    "open_notebook":{
+    "open_notebook": {
       "desc": "open notebook from experiment run"
+    },
+    "push-results": {
+      "desc": "pushes results to march-madness dashboard"
+    },
+    "run": {
+      "desc": "runs march madness program with three sets of inputs"
     }
-  }, 
-  "actions_redirect": {}
+  },
+  "actions_redirect": {
+    "push-results": "push_results"
+  }
 }

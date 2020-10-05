@@ -27,23 +27,19 @@ void populateMatrix(int team_1_Id, int team_2_Id, int team_1_score, int team_2_s
 
 void construct_correct_vector(std::string correct_file);
 
+void construct_pred_vector(std::vector<int> vect1, std::vector<int> vect2);
+
 void printVector(std::vector<int> vect);
 
 void printVector(std::vector<Team> vect);
 
 void constructAxes();
 
-double computeSSE(std::vector<int> vect1, std::vector<Team> vect2);
+double computeSE(std::vector<int> vect1, std::vector<int> vect2);
 
 void createLabels();
 
 std::vector<std::string> getLabels();
-
-double sse();
-
-double mse();
-
-double se();
 
 std::vector<int> get_x_axis();
 

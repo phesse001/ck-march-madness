@@ -6,7 +6,7 @@
   "dict": {
     "shared": "git",
     "sync": "yes",
-    "url": "https://github.com/phesse001/marchmadness",
+    "url": "https://github.com/phesse001/MarchMadness_CK",
     "repo_deps": [
       {
         "repo_uoa": "ck-autotuning"

@@ -15,6 +15,8 @@ vector<Team*> teamCollection;
 vector<Team> resultVector;
 vector<int> predicted_ids;
 vector<int> correct_ids;
+vector<int> predicted_rank;
+vector<int> correct_rank;
 map<int, Team*> teamMap;
 Matrix<double, Dynamic, Dynamic> gameMatrix;
 VectorXd scores;
@@ -25,6 +27,7 @@ int numTeams;
 const int HIGH_MARGIN = 21;
 const double HIGH_MARGIN_SCALE = .8;
 double pSum;
+double se;
 
 
 void run(int home_field_advantage, bool apply_scaling, char* dataset_path_name){
@@ -43,13 +46,12 @@ void run(int home_field_advantage, bool apply_scaling, char* dataset_path_name){
      vector<Team>::iterator itr2;
      int count = 0;
      for(itr2 = resultVector.end() - 1; itr2 != resultVector.begin() - 1 ; --itr2){
-        if(count < 64)
-        {
         predicted_ids.push_back(itr2->getId());           
-        }
         cout << itr2->getId() << itr2->getName() << endl;
-        count += 1;
      }
+    construct_pred_vector(predicted_ids,correct_ids);
+    se = computeSE(predicted_rank,correct_rank);
+    cout << "Standard Error: " << se << endl;
 
 }
 void createTeams(string teamData) {
@@ -160,6 +162,10 @@ void populateMatrix(int team1Index, int team2Index, int team_1_score, int team_2
 
 void construct_correct_vector(string correct_file)
 {
+    for(int i = 1; i < 65; i++)
+    {
+        correct_rank.push_back(i);
+    }
     string id, name;
     ifstream is(correct_file);
     if(is.is_open()){
@@ -171,6 +177,20 @@ void construct_correct_vector(string correct_file)
         is.close();
     }
     else cout << "Unable to open file";
+}
+
+void construct_pred_vector(std::vector<int> vect1, std::vector<int> vect2)
+{
+    for(int i = 0; i < vect2.size(); i++)
+    {
+       for(int j = 0; j < vect1.size(); j++)
+       {
+         if(vect2.at(i) == vect1.at(j))
+         {
+            predicted_rank.push_back(j+1);
+         }
+       }
+    }
 }
 
 map<int, Team*> getTeamMap()
@@ -198,6 +218,21 @@ std::vector<Team*> getTeamCollection()
     return teamCollection;
 }
 
+double computeSE(std::vector<int> pred, std::vector<int> act)
+{
+    double sum = 0;
+    double final;
+    int n = pred.size();
+    double diff;
 
+    for(int i = 0; i < n; i++)
+    {
+      diff = act.at(i) - pred.at(i);
+      sum += pow(diff,2);
+    }
+    final = pow((sum/n),.5);
+
+    return final;
+}
 
 

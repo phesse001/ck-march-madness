@@ -46,26 +46,46 @@ def run(i):
             }
 
     """
+    #find simulator entry
+    r=ck.access({'action':'find', 'module_uoa':'program', 'data_uoa':'simulator'})
+    if r['return']>0: return r # use standard error handling in the CK
+    path = r['path']
+
+    #find results entry
+    r=ck.access({'action':'find', 'module_uoa':'mm-simulator', 'data_uoa':'results'})
+    if r['return']>0: return r # use standard error handling in the CK
+    r_path = r['path']
+
     r=ck.access({'action':'compile', 'module_uoa':'program', 'data_uoa':'simulator'})
     if r['return']>0: return r # use standard error handling in the CK
-
+    
+    print("\nHome_Field_Advantage: 0\nApply_Scaling: True")
     r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator'})
     if r['return']>0: return r # use standard error handling in the CK
 
-    os.system("cp /home/patrick/CK/march-madness/program/simulator/tmp/stdout.log /home/patrick/CK/march-madness/program/simulator/tmp/stdout1.log")
+    os.system("cp " + path + "/tmp/stdout.log " + path + "/tmp/stdout1.log")
 
+    print("\nHome_Field_Advantage: 4\nApply_Scaling: True")
     r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':'4'})
     if r['return']>0: return r # use standard error handling in the CK
 
-    os.system("cp /home/patrick/CK/march-madness/program/simulator/tmp/stdout.log /home/patrick/CK/march-madness/program/simulator/tmp/stdout2.log")
-
+    os.system("cp " + path + "/tmp/stdout.log " + path + "/tmp/stdout2.log")
+    
+    print("\nHome_Field_Advantage: 8\nApply_Scaling: True")
     r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':'8'})
     if r['return']>0: return r # use standard error handling in the CK
 
-    os.system("cp /home/patrick/CK/march-madness/program/simulator/tmp/stdout.log /home/patrick/CK/march-madness/program/simulator/tmp/stdout3.log")
+    os.system("cp " + path + "/tmp/stdout.log " + path + "/tmp/stdout3.log")
+
+    #copy files to results entry to use for dashboard graph later
+
+    os.system("cp " + path + "/tmp/stdout1.log " + r_path)
+    os.system("cp " + path + "/tmp/stdout2.log " + r_path)
+    os.system("cp " + path + "/tmp/stdout3.log " + r_path)
 
     #removes duplicate file of stdout1.log
     os.system("rm stdout.log")
+    print("\nResults can be found in " + path + "/tmp directory\n\nRun 'ck {action} mm-simulator --help to learn more about a specified action\n")
 
     return {'return':0}
 ##############################################################################
@@ -166,3 +186,39 @@ def open_notebook(i):
     """
     r=ck.access({'action':'run', 'module_uoa':'jnotebook', 'data_uoa':'notebook'})
     if r['return']>0: return r # use standard error handling in the CK
+##############################################################################
+# pushes results to march-madness dashboard
+# tbd - get results from tmp, calculate metric(sse or se), create json file with results, call push-results with json file
+
+def push_results(i):
+    """
+    Input:  {
+            }
+
+    Output: {
+              return       - return code =  0, if successful
+                                         >  0, if error
+              (error)      - error text if return > 0
+            }
+
+    """
+    '''
+    ck.out('pushes results to march-madness dashboard')
+
+    ck.out('')
+    ck.out('Command line: ')
+    ck.out('')
+
+    import json
+    #cmd=json.dumps(i, indent=2)
+    cmd = i
+    ck.out(cmd)
+    '''
+    #get path to stdout
+    r=ck.access({'action':'find', 'module_uoa':'mm-simulator', 'data_uoa':'results'})
+    if r['return']>0: return r # use standard error handling in the CK
+    r_path=r['path']
+    
+
+
+    return {'return':0}
