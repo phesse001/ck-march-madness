@@ -33,6 +33,7 @@ def init(i):
 
 ##############################################################################
 # runs march madness program with three sets of inputs
+# tbd retrieve actual inputs from meta
 
 def run(i):
     """
@@ -86,6 +87,10 @@ def run(i):
     #removes duplicate file of stdout1.log
     os.system("rm stdout.log")
     print("\nResults can be found in " + path + "/tmp directory\n\nRun 'ck {action} mm-simulator --help to learn more about a specified action\n")
+
+
+    r=ck.access({'action':'edit', 'module_uoa':'mm-simulator', 'data_uoa':'results'})
+    if r['return']>0: return r # use standard error handling in the CK
 
     return {'return':0}
 ##############################################################################
@@ -190,7 +195,7 @@ def open_notebook(i):
 # pushes results to march-madness dashboard
 # tbd - get results from tmp, calculate metric(sse or se), create json file with results, call push-results with json file
 
-def push_results(i):
+def push_result(i):
     """
     Input:  {
             }
@@ -218,7 +223,48 @@ def push_results(i):
     r=ck.access({'action':'find', 'module_uoa':'mm-simulator', 'data_uoa':'results'})
     if r['return']>0: return r # use standard error handling in the CK
     r_path=r['path']
+
+    r=ck.access({'action':'list_files','repo_uoa':'march-madness', 'module_uoa':'mm-simulator', 'data_uoa':'results'})
+    if r['return']>0: return r # use standard error handling in the CK
+    print(r)
     
 
+    
+
+
+    return {'return':0}
+##############################################################################
+# 
+
+def push(i):
+    """
+    Input:  {
+            }
+
+    Output: {
+              return       - return code =  0, if successful
+                                         >  0, if error
+              (error)      - error text if return > 0
+            }
+
+    """
+
+    r=ck.access({'action':'list_files','repo_uoa':'march-madness', 'module_uoa':'mm-simulator', 'data_uoa':'results','skip_sort':'yes'})
+    if r['return']>0: return r # use standard error handling in the CK
+    file_info = r['list']
+    num_files = r['number']
+
+    if num_files == 0:
+    	ck.out('No results to push')
+    elif num_files == 1:
+        ck.out('There is one file, push it to dashboard')
+    else:
+        ck.out('')
+        ck.out('There is more than one result')
+        ck.out('')
+        r=ck.access({'action':'select_uoa','module_uoa':'choice','choices':tst})
+        if r['return']>0: return r
+        dduoa=r['choice']
+        ck.out('')
 
     return {'return':0}
