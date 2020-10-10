@@ -51,7 +51,7 @@ void run(int home_field_advantage, bool apply_scaling, char* dataset_path_name){
      }
     construct_pred_vector(predicted_ids,correct_ids);
     se = computeSE(predicted_rank,correct_rank);
-    cout << "SE " << se << endl;
+    cout << "Standard Error " << se << endl;
 
 }
 void createTeams(string teamData) {

@@ -88,10 +88,6 @@ def run(i):
     os.system("rm stdout.log")
     print("\nResults can be found in " + path + "/tmp directory\n\nRun 'ck {action} mm-simulator --help to learn more about a specified action\n")
 
-
-    r=ck.access({'action':'edit', 'module_uoa':'mm-simulator', 'data_uoa':'results'})
-    if r['return']>0: return r # use standard error handling in the CK
-
     return {'return':0}
 ##############################################################################
 # generate paper
@@ -192,49 +188,6 @@ def open_notebook(i):
     r=ck.access({'action':'run', 'module_uoa':'jnotebook', 'data_uoa':'notebook'})
     if r['return']>0: return r # use standard error handling in the CK
 ##############################################################################
-# pushes results to march-madness dashboard
-# tbd - get results from tmp, calculate metric(sse or se), create json file with results, call push-results with json file
-
-def push_result(i):
-    """
-    Input:  {
-            }
-
-    Output: {
-              return       - return code =  0, if successful
-                                         >  0, if error
-              (error)      - error text if return > 0
-            }
-
-    """
-    '''
-    ck.out('pushes results to march-madness dashboard')
-
-    ck.out('')
-    ck.out('Command line: ')
-    ck.out('')
-
-    import json
-    #cmd=json.dumps(i, indent=2)
-    cmd = i
-    ck.out(cmd)
-    '''
-    #get path to stdout
-    r=ck.access({'action':'find', 'module_uoa':'mm-simulator', 'data_uoa':'results'})
-    if r['return']>0: return r # use standard error handling in the CK
-    r_path=r['path']
-
-    r=ck.access({'action':'list_files','repo_uoa':'march-madness', 'module_uoa':'mm-simulator', 'data_uoa':'results'})
-    if r['return']>0: return r # use standard error handling in the CK
-    print(r)
-    
-
-    
-
-
-    return {'return':0}
-##############################################################################
-# 
 
 def push(i):
     """
@@ -249,22 +202,48 @@ def push(i):
 
     """
 
-    r=ck.access({'action':'list_files','repo_uoa':'march-madness', 'module_uoa':'mm-simulator', 'data_uoa':'results','skip_sort':'yes'})
+    r=ck.access({'action':'list_files','repo_uoa':'march-madness',
+                 'module_uoa':'mm-simulator', 'data_uoa':'results',
+                 'skip_sort':'yes'})
     if r['return']>0: return r # use standard error handling in the CK
     file_info = r['list']
     num_files = r['number']
-
+    res = []
+    selection = None
     if num_files == 0:
     	ck.out('No results to push')
     elif num_files == 1:
-        ck.out('There is one file, push it to dashboard')
+        for item in file_info:
+            selection = item
+            print(str(count) + ") " + item)
     else:
         ck.out('')
         ck.out('There is more than one result')
         ck.out('')
-        r=ck.access({'action':'select_uoa','module_uoa':'choice','choices':tst})
-        if r['return']>0: return r
-        dduoa=r['choice']
-        ck.out('')
+        count = 0;
+        for item in file_info:
+        	print(str(count) + ") " + item)
+        	count += 1
+        	res.append(item)
+
+    y='\nSelect UOA (or press Enter for 0)'
+
+    rx=ck.inp({'text':y})
+    x=rx['string'].strip()
+    if x=='': x='0'
+
+    selection = res[int(x)]
+    print("\nSelected " + selection)
+
+    r=ck.access({'action':'find','module_uoa':'mm-simulator', 'data_uoa':'results'})
+    path = r['path']
+
+    file1 = open(path + "/" + selection, 'r') 
+
+    for line in reversed(list(file1)):
+    	if "Standard Error" in line:
+            se = line.split()[2]
+
+    
 
     return {'return':0}
