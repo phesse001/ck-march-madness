@@ -33,7 +33,7 @@ def init(i):
 
 ##############################################################################
 # runs march madness program with three sets of inputs
-# tbd retrieve actual inputs from meta
+# tbd retrieve actual inputs from meta or ask for inputs
 
 def run(i):
     """
@@ -52,6 +52,11 @@ def run(i):
     if r['return']>0: return r # use standard error handling in the CK
     path = r['path']
 
+    #Access run parameters
+    r=ck.access({'action':'load', 'repo_uoa':'march-madness', 'module_uoa':'program', 'data_uoa':'simulator'})
+    if r['return']>0: return r # use standard error handling in the CK
+    r_vars = r['dict']['run_vars']
+
     #find results entry
     r=ck.access({'action':'find', 'module_uoa':'mm-simulator', 'data_uoa':'results'})
     if r['return']>0: return r # use standard error handling in the CK
@@ -67,13 +72,13 @@ def run(i):
     os.system("cp " + path + "/tmp/stdout.log " + path + "/tmp/stdout1.log")
 
     print("\nHome_Field_Advantage: 4\nApply_Scaling: True")
-    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':'4'})
+    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':run_vars['home_field_advantage_2']})
     if r['return']>0: return r # use standard error handling in the CK
 
     os.system("cp " + path + "/tmp/stdout.log " + path + "/tmp/stdout2.log")
     
     print("\nHome_Field_Advantage: 8\nApply_Scaling: True")
-    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':'8'})
+    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':run_vars['home_field_advantage_3']})
     if r['return']>0: return r # use standard error handling in the CK
 
     os.system("cp " + path + "/tmp/stdout.log " + path + "/tmp/stdout3.log")
@@ -244,6 +249,23 @@ def push(i):
     	if "Standard Error" in line:
             se = line.split()[2]
 
-    
+    #Access run parameters
+    r=ck.access({'action':'load', 'repo_uoa':'march-madness', 'module_uoa':'program', 'data_uoa':'simulator'})
+    if r['return']>0: return r # use standard error handling in the CK
+    r_vars = r['dict']['run_vars']
+    apply_scaling = False
+    hfa = None
+
+    if selection == 'stdout3.log':
+    	hfa = r_vars['home_field_advantage_3']
+    elif selection == 'stdout2.log':
+    	hfa = r_vars['home_field_advantage_2']
+    else:
+    	hfa = r_vars['home_field_advantage']
+
+    os.chdir(path)
+    f = open("results.json", "w")
+    f.write('{"num": 2, "se": 30.21, "hfa": 20, "apply_scaling":true}')
+    f.close()
 
     return {'return':0}

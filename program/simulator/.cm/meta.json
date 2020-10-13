@@ -53,7 +53,11 @@
 
   "run_vars": {
     "home_field_advantage":"0",
-    "apply_scaling":1
+    "home_field_advantage_2":"4",
+    "home_field_advantage_3":"8",
+    "apply_scaling":1,
+    "apply_scaling_2":0
+
   },
   "source_files": [
     "Simulator.cpp",
