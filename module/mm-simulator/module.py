@@ -64,21 +64,159 @@ def run(i):
 
     r=ck.access({'action':'compile', 'module_uoa':'program', 'data_uoa':'simulator'})
     if r['return']>0: return r # use standard error handling in the CK
+
+    y='\nWould you like to apply scaling? (Press 1 for True, 0 for False): '
+
+    valid = False
+    while valid == False:
+        rx=ck.inp({'text':y})
+        x=rx['string'].strip()
+        if x=='': x='0'
+        if x == '0':
+        	valid = True
+        	apply_scaling = 0
+        elif x == '1':
+        	valid = True
+        	apply_scaling = 1
+        else:
+        	ck.out("\nInvalid response, please enter 0 or 1")
+
+    y='\nEnter a Home Field Advantage: '
+
+    valid = False
+    while valid == False:
+        rx=ck.inp({'text':y})
+        x=rx['string'].strip()
+        if x=='': x='0'
+        try:
+        	int(x)
+        	valid = True
+        	hfa = int(x)
+        except ValueError:
+        	ck.out("invalid input")
+
+
+    r=ck.access({'action':'find', 'module_uoa':'program', 'data_uoa':'simulator'})
+    if r['return']>0: return r # use standard error handling in the CK
+    p = r['path']
+
+    r=ck.load_json_file({'json_file': p + "/.cm/meta.json"})
+    if r['return']>0: ck.err(r)
+
+    d = r['dict']
+    d['run_vars']['home_field_advantage_1']= hfa
+    d['run_vars']['apply_scaling_1']= apply_scaling
+
+    r=ck.save_json_to_file({'json_file': p + "/.cm/meta.json", 'dict':d, 'sort_keys':'yes'})
+    if r['return']>0: ck.err(r)
+
+    print("\nHome_Field_Advantage: " + str(hfa) + "\nApply_Scaling: " + str(apply_scaling))
     
-    print("\nHome_Field_Advantage: 0\nApply_Scaling: True")
-    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator'})
+    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':hfa, 'env.apply_scaling':apply_scaling})
     if r['return']>0: return r # use standard error handling in the CK
 
     os.system("cp " + path + "/tmp/stdout.log " + path + "/tmp/stdout1.log")
 
-    print("\nHome_Field_Advantage: 4\nApply_Scaling: True")
-    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':run_vars['home_field_advantage_2']})
+    y='\nWould you like to apply scaling? (Press 1 for True, 0 for False): '
+
+    valid = False
+    while valid == False:
+        rx=ck.inp({'text':y})
+        x=rx['string'].strip()
+        if x=='': x='0'
+        if x == '0':
+        	valid = True
+        	apply_scaling = 0
+        elif x == '1':
+        	valid = True
+        	apply_scaling = 1
+        else:
+        	ck.out("\nInvalid response, please enter 0 or 1")
+
+    y='\nEnter a Home Field Advantage: '
+
+    valid = False
+    while valid == False:
+        rx=ck.inp({'text':y})
+        x=rx['string'].strip()
+        if x=='': x='0'
+        try:
+        	int(x)
+        	valid = True
+        	hfa = int(x)
+        except ValueError:
+        	ck.out("invalid input")
+
+
+    r=ck.access({'action':'find', 'module_uoa':'program', 'data_uoa':'simulator'})
+    if r['return']>0: return r # use standard error handling in the CK
+    p = r['path']
+
+    r=ck.load_json_file({'json_file': p + "/.cm/meta.json"})
+    if r['return']>0: ck.err(r)
+
+    d = r['dict']
+    d['run_vars']['home_field_advantage_2']= hfa
+    d['run_vars']['apply_scaling_2']= apply_scaling
+
+    r=ck.save_json_to_file({'json_file': p + "/.cm/meta.json", 'dict':d, 'sort_keys':'yes'})
+    if r['return']>0: ck.err(r)
+
+    print("\nHome_Field_Advantage: " + str(hfa) + "\nApply_Scaling: " + str(apply_scaling))
+
+    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':hfa, 'env.apply_scaling':apply_scaling})
     if r['return']>0: return r # use standard error handling in the CK
 
     os.system("cp " + path + "/tmp/stdout.log " + path + "/tmp/stdout2.log")
-    
-    print("\nHome_Field_Advantage: 8\nApply_Scaling: True")
-    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':run_vars['home_field_advantage_3']})
+
+    y='\nWould you like to apply scaling? (Press 1 for True, 0 for False): '
+
+    valid = False
+    while valid == False:
+        rx=ck.inp({'text':y})
+        x=rx['string'].strip()
+        if x=='': x='0'
+        if x == '0':
+        	valid = True
+        	apply_scaling = 0
+        elif x == '1':
+        	valid = True
+        	apply_scaling = 1
+        else:
+        	ck.out("\nInvalid response, please enter 0 or 1")
+
+    y='\nEnter a Home Field Advantage: '
+
+    valid = False
+    while valid == False:
+        rx=ck.inp({'text':y})
+        x=rx['string'].strip()
+        if x=='': x='0'
+        try:
+        	int(x)
+        	valid = True
+        	hfa = int(x)
+        except ValueError:
+        	ck.out("invalid input")
+
+
+    r=ck.access({'action':'find', 'module_uoa':'program', 'data_uoa':'simulator'})
+    if r['return']>0: return r # use standard error handling in the CK
+    p = r['path']
+
+    r=ck.load_json_file({'json_file': p + "/.cm/meta.json"})
+    if r['return']>0: ck.err(r)
+
+    d = r['dict']
+    d['run_vars']['home_field_advantage_3']= hfa
+    d['run_vars']['apply_scaling_3']= apply_scaling
+
+    r=ck.save_json_to_file({'json_file': p + "/.cm/meta.json", 'dict':d, 'sort_keys':'yes'})
+    if r['return']>0: ck.err(r)
+
+    print("\nHome_Field_Advantage: " + str(hfa) + "\nApply_Scaling: " + str(apply_scaling))
+
+    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':hfa, 'env.apply_scaling':apply_scaling})
     if r['return']>0: return r # use standard error handling in the CK
 
     os.system("cp " + path + "/tmp/stdout.log " + path + "/tmp/stdout3.log")
@@ -242,6 +380,7 @@ def push(i):
 
     r=ck.access({'action':'find','module_uoa':'mm-simulator', 'data_uoa':'results'})
     path = r['path']
+    print("path " + path)
 
     file1 = open(path + "/" + selection, 'r') 
 
@@ -253,19 +392,23 @@ def push(i):
     r=ck.access({'action':'load', 'repo_uoa':'march-madness', 'module_uoa':'program', 'data_uoa':'simulator'})
     if r['return']>0: return r # use standard error handling in the CK
     r_vars = r['dict']['run_vars']
-    apply_scaling = False
+
     hfa = None
+    apply_scaling = None
 
     if selection == 'stdout3.log':
     	hfa = r_vars['home_field_advantage_3']
+    	apply_scaling = r_vars['apply_scaling_3']
     elif selection == 'stdout2.log':
     	hfa = r_vars['home_field_advantage_2']
+    	apply_scaling = r_vars['apply_scaling_2']
     else:
-    	hfa = r_vars['home_field_advantage']
+    	hfa = r_vars['home_field_advantage_1']
+    	apply_scaling = r_vars['apply_scaling_1']
 
     os.chdir(path)
     f = open("results.json", "w")
-    f.write('{"num": 2, "se": 30.21, "hfa": 20, "apply_scaling":true}')
+    f.write('{"hfa": ' + str(hfa) + ',  "apply_scaling": ' + str(apply_scaling) + ', "se": ' + se + '}')
     f.close()
 
     return {'return':0}
