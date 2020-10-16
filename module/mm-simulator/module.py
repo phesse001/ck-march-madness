@@ -369,18 +369,17 @@ def push(i):
         	count += 1
         	res.append(item)
 
-    y='\nSelect UOA (or press Enter for 0)'
+    y='\nSelect UOA (or press Enter for 0) '
 
     rx=ck.inp({'text':y})
     x=rx['string'].strip()
     if x=='': x='0'
 
     selection = res[int(x)]
-    print("\nSelected " + selection)
+    print("\nSelected " + selection + "\n")
 
     r=ck.access({'action':'find','module_uoa':'mm-simulator', 'data_uoa':'results'})
     path = r['path']
-    print("path " + path)
 
     file1 = open(path + "/" + selection, 'r') 
 
@@ -406,9 +405,10 @@ def push(i):
     	hfa = r_vars['home_field_advantage_1']
     	apply_scaling = r_vars['apply_scaling_1']
 
-    os.chdir(path)
+    os.chdir(path + "/..")
     f = open("results.json", "w")
-    f.write('{"hfa": ' + str(hfa) + ',  "apply_scaling": ' + str(apply_scaling) + ', "se": ' + se + '}')
+    f.write('{"hfa": ' + str(hfa) + ',  "as": ' + str(apply_scaling) + ', "se": ' + se + '}')
     f.close()
+    os.system('cb push-result mm-simulator-results --filename="results.json"')
 
     return {'return':0}
