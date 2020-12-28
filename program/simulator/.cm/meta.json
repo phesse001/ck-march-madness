@@ -9,7 +9,7 @@
     },
     "package": {
       "local": "yes",
-      "name": "lib-eigen-src-3.3.4",
+      "name": "lib-eigen-src-3.3.4-linux-64",
       "no_tags": "",
       "tags": "eigen"
     }
@@ -40,6 +40,7 @@
       ],
       "ignore_return_code": "no",
       "run_time": {
+        "fine_grain_timer_file": "tmp-ck-timer.json",
         "run_cmd_main": "$#BIN_FILE#$ $#dataset_path#$",
         "run_cmd_out1": "stdout.log",
         "run_cmd_out2": "stderr.log",
@@ -53,12 +54,9 @@
   "run_vars": {
     "apply_scaling": 0,
     "apply_scaling_1": 1,
-    "apply_scaling_2": 1,
-    "apply_scaling_3": 1,
     "home_field_advantage": 0,
-    "home_field_advantage_1": 3,
-    "home_field_advantage_2": 7,
-    "home_field_advantage_3": 12
+    "home_field_advantage_1": 4,
+    "CT_REPEAT_MAIN": "1"
   },
   "source_files": [
     "Simulator.cpp",
