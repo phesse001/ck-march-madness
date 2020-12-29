@@ -1,4 +1,4 @@
-# Collective Knowledge workflows for MarchMadness
+# Collective Knowledge Framework applied to C++ March Madness Ranking Predictor
 
 
 
