@@ -8,7 +8,7 @@
 Pull CK repo
 
 ```
-ck pull repo --url=https://github.com/phesse001/MarchMadness_CK
+ck pull repo --url=<repo url>
 ```
 
 List programs
@@ -50,6 +50,22 @@ ck run program:simulator --env.apply_scaling_1=100
  or
 ```
 ck benchmark program:simulator --env.apply_scaling_1=100
+```
+Run compiler autotuning experiment
+```
+ck autotune program:simulator --iterations=100 --repetitions=4 --record_uoa=march-madness-experiment --gcc
+```
+See results
+```
+ck plot graph:<experiment uoa>
+```
+or
+```
+ck browse experiment:<experiment uoa>
+```
+Replay a specific point
+```
+ck replay experiment:<experiment uoa> --point=<point uoa>
 ```
 
 
