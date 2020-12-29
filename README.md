@@ -67,6 +67,14 @@ Replay a specific point
 ```
 ck replay experiment:<experiment uoa> --point=<point uoa>
 ```
+Run march madness experiment with compiler flags that acheived highest speedup for GCC 7 on RPi
+  ```
+ck benchmark program:simulator
+  --shared_solution_cid=27bc42ee449e880e:
+  79bca2b76876b5c6-8289e0cf24346aa7-
+  f49649288ab0accd
+```
+
 
 
 
