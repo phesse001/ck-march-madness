@@ -12,6 +12,11 @@
       "name": "lib-eigen-src-3.3.4-linux-64",
       "no_tags": "",
       "tags": "eigen"
+    },
+    "xopenme": {
+      "local": "yes",
+      "name": "xOpenME library",
+      "tags": "lib,xopenme"
     }
   },
   "compiler_add_include_as_env_from_deps": [
@@ -19,7 +24,6 @@
     "CK_ENV_LIB_STDCPP_INCLUDE_EXTRA"
   ],
   "compiler_env": "CK_CXX",
-  "compiler_flags_as_env": "$<<CK_COMPILER_FLAG_CPP11>>$",
   "data_name": "simulator",
   "linker_add_lib_as_env": [
     "CK_CXX_EXTRA",
@@ -46,7 +50,8 @@
         "run_cmd_out2": "stderr.log",
         "run_output_files": [
           "stdout.log",
-          "stderr.log"
+          "stderr.log",
+          "tmp-ck-timer.json"
         ]
       }
     }
