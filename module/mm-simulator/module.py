@@ -55,180 +55,104 @@ def run(i):
     #Access run parameters
     r=ck.access({'action':'load', 'repo_uoa':'march-madness', 'module_uoa':'program', 'data_uoa':'simulator'})
     if r['return']>0: return r # use standard error handling in the CK
-    r_vars = r['dict']['run_vars']
+    #reset previous run variables
+    d = r['dict']
+    d['run_vars'].clear()
+    d['run_vars']["home_field_advantage"] = 0
+    d['run_vars']["apply_scaling"] = 0
+    r=ck.save_json_to_file({'json_file': path + "/.cm/meta.json", 'dict':d, 'sort_keys':'yes'})
+    #if r['return']>0: ck.err(r)
 
     #find results entry
     r=ck.access({'action':'find', 'module_uoa':'mm-simulator', 'data_uoa':'results'})
     if r['return']>0: return r # use standard error handling in the CK
     r_path = r['path']
 
+    r=ck.access({'action':'list_files','repo_uoa':'march-madness',
+                 'module_uoa':'mm-simulator', 'data_uoa':'results'})
+    if r['return']>0: return r # use standard error handling in the CK
+
+    #remove old run files
+    file_info = r['list']
+    os.chdir(r_path)
+    for file in file_info:
+    	os.chdir(r_path)
+    	os.system("rm " + file)
+    	os.chdir(path + "/tmp")
+    	os.system("rm " + file)
+    
     r=ck.access({'action':'compile', 'module_uoa':'program', 'data_uoa':'simulator'})
     if r['return']>0: return r # use standard error handling in the CK
 
-    y='\nWould you like to apply scaling? (Press 1 for True, 0 for False): '
 
-    valid = False
-    while valid == False:
-        rx=ck.inp({'text':y})
-        x=rx['string'].strip()
-        if x=='': x='0'
-        if x == '0':
-        	valid = True
-        	apply_scaling = 0
-        elif x == '1':
-        	valid = True
-        	apply_scaling = 1
-        else:
-        	ck.out("\nInvalid response, please enter 0 or 1")
+    y='\nEnter the number of times you would like to run the March Madness Program: '
 
-    y='\nEnter a Home Field Advantage: '
+    while True:
+    	try:
+            rx=ck.inp({'text':y})
+            x=rx['string'].strip()
+            itr = int(x)
+            break
+    	except ValueError:
+    		ck.out("Invalid input, try again")
 
-    valid = False
-    while valid == False:
-        rx=ck.inp({'text':y})
-        x=rx['string'].strip()
-        if x=='': x='0'
-        try:
-        	int(x)
-        	valid = True
-        	hfa = int(x)
-        except ValueError:
-        	ck.out("invalid input")
+    count = 1
+    while (count <= int(itr)):
+        ck.out("############################################################################\nIteration: " + str(count))
+        y='\nWould you like to apply scaling? (Press 1 for True, 0 for False): '
+
+        valid = False
+        while valid == False:
+            rx=ck.inp({'text':y})
+            x=rx['string'].strip()
+            if x=='': x='0'
+            if x == '0':
+        	    valid = True
+        	    apply_scaling = 0
+            elif x == '1':
+        	    valid = True
+        	    apply_scaling = 1
+            else:
+        	    ck.out("\nInvalid response, please enter 0 or 1")
+
+        y='\nEnter a Home Field Advantage: '
+
+        while True:
+    	    try:
+                rx=ck.inp({'text':y})
+                x=rx['string'].strip()
+                hfa = int(x)
+                break
+    	    except ValueError:
+    		    ck.out("Invalid input, try again")
 
 
-    r=ck.access({'action':'find', 'module_uoa':'program', 'data_uoa':'simulator'})
-    if r['return']>0: return r # use standard error handling in the CK
-    p = r['path']
+        r=ck.access({'action':'find', 'module_uoa':'program', 'data_uoa':'simulator'})
+        if r['return']>0: return r # use standard error handling in the CK
+        p = r['path']
 
-    r=ck.load_json_file({'json_file': p + "/.cm/meta.json"})
-    if r['return']>0: ck.err(r)
+        r=ck.load_json_file({'json_file': p + "/.cm/meta.json"})
+        if r['return']>0: ck.err(r)
 
-    d = r['dict']
-    d['run_vars']['home_field_advantage_1']= hfa
-    d['run_vars']['apply_scaling_1']= apply_scaling
+        d = r['dict']
+        d['run_vars']['home_field_advantage_' + str(count)]= hfa
+        d['run_vars']['apply_scaling_' + str(count)]= apply_scaling
 
-    r=ck.save_json_to_file({'json_file': p + "/.cm/meta.json", 'dict':d, 'sort_keys':'yes'})
-    if r['return']>0: ck.err(r)
+        r=ck.save_json_to_file({'json_file': p + "/.cm/meta.json", 'dict':d, 'sort_keys':'yes'})
+        if r['return']>0: ck.err(r)
 
-    print("\nHome_Field_Advantage: " + str(hfa) + "\nApply_Scaling: " + str(apply_scaling))
+        print("\nHome_Field_Advantage: " + str(hfa) + "\nApply_Scaling: " + str(apply_scaling))
     
-    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':hfa, 'env.apply_scaling':apply_scaling})
-    if r['return']>0: return r # use standard error handling in the CK
+        r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':hfa, 'env.apply_scaling':apply_scaling})
+        if r['return']>0: return r # use standard error handling in the CK
 
-    os.system("cp " + path + "/tmp/stdout.log " + path + "/tmp/stdout1.log")
-
-    y='\nWould you like to apply scaling? (Press 1 for True, 0 for False): '
-
-    valid = False
-    while valid == False:
-        rx=ck.inp({'text':y})
-        x=rx['string'].strip()
-        if x=='': x='0'
-        if x == '0':
-        	valid = True
-        	apply_scaling = 0
-        elif x == '1':
-        	valid = True
-        	apply_scaling = 1
-        else:
-        	ck.out("\nInvalid response, please enter 0 or 1")
-
-    y='\nEnter a Home Field Advantage: '
-
-    valid = False
-    while valid == False:
-        rx=ck.inp({'text':y})
-        x=rx['string'].strip()
-        if x=='': x='0'
-        try:
-        	int(x)
-        	valid = True
-        	hfa = int(x)
-        except ValueError:
-        	ck.out("invalid input")
-
-
-    r=ck.access({'action':'find', 'module_uoa':'program', 'data_uoa':'simulator'})
-    if r['return']>0: return r # use standard error handling in the CK
-    p = r['path']
-
-    r=ck.load_json_file({'json_file': p + "/.cm/meta.json"})
-    if r['return']>0: ck.err(r)
-
-    d = r['dict']
-    d['run_vars']['home_field_advantage_2']= hfa
-    d['run_vars']['apply_scaling_2']= apply_scaling
-
-    r=ck.save_json_to_file({'json_file': p + "/.cm/meta.json", 'dict':d, 'sort_keys':'yes'})
-    if r['return']>0: ck.err(r)
-
-    print("\nHome_Field_Advantage: " + str(hfa) + "\nApply_Scaling: " + str(apply_scaling))
-
-    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':hfa, 'env.apply_scaling':apply_scaling})
-    if r['return']>0: return r # use standard error handling in the CK
-
-    os.system("cp " + path + "/tmp/stdout.log " + path + "/tmp/stdout2.log")
-
-    y='\nWould you like to apply scaling? (Press 1 for True, 0 for False): '
-
-    valid = False
-    while valid == False:
-        rx=ck.inp({'text':y})
-        x=rx['string'].strip()
-        if x=='': x='0'
-        if x == '0':
-        	valid = True
-        	apply_scaling = 0
-        elif x == '1':
-        	valid = True
-        	apply_scaling = 1
-        else:
-        	ck.out("\nInvalid response, please enter 0 or 1")
-
-    y='\nEnter a Home Field Advantage: '
-
-    valid = False
-    while valid == False:
-        rx=ck.inp({'text':y})
-        x=rx['string'].strip()
-        if x=='': x='0'
-        try:
-        	int(x)
-        	valid = True
-        	hfa = int(x)
-        except ValueError:
-        	ck.out("invalid input")
-
-
-    r=ck.access({'action':'find', 'module_uoa':'program', 'data_uoa':'simulator'})
-    if r['return']>0: return r # use standard error handling in the CK
-    p = r['path']
-
-    r=ck.load_json_file({'json_file': p + "/.cm/meta.json"})
-    if r['return']>0: ck.err(r)
-
-    d = r['dict']
-    d['run_vars']['home_field_advantage_3']= hfa
-    d['run_vars']['apply_scaling_3']= apply_scaling
-
-    r=ck.save_json_to_file({'json_file': p + "/.cm/meta.json", 'dict':d, 'sort_keys':'yes'})
-    if r['return']>0: ck.err(r)
-
-    print("\nHome_Field_Advantage: " + str(hfa) + "\nApply_Scaling: " + str(apply_scaling))
-
-    r=ck.access({'action':'run', 'module_uoa':'program', 'data_uoa':'simulator', 'env.home_field_advantage':hfa, 'env.apply_scaling':apply_scaling})
-    if r['return']>0: return r # use standard error handling in the CK
-
-    os.system("cp " + path + "/tmp/stdout.log " + path + "/tmp/stdout3.log")
-
-    #copy files to results entry to use for dashboard graph later
-
-    os.system("cp " + path + "/tmp/stdout1.log " + r_path)
-    os.system("cp " + path + "/tmp/stdout2.log " + r_path)
-    os.system("cp " + path + "/tmp/stdout3.log " + r_path)
+        os.system("cp " + path + "/tmp/stdout.log " + path + "/tmp/stdout" + str(count) + ".log")
+        os.system("cp " + path + "/tmp/stdout" + str(count) + ".log " + r_path + "/stdout" + str(count) + ".log")
+        count += 1
 
     #removes duplicate file of stdout1.log
     os.system("rm stdout.log")
+
     print("\nResults can be found in " + path + "/tmp directory\n\nRun 'ck {action} mm-simulator --help to learn more about a specified action\n")
 
     return {'return':0}
@@ -346,69 +270,67 @@ def push(i):
     """
 
     r=ck.access({'action':'list_files','repo_uoa':'march-madness',
-                 'module_uoa':'mm-simulator', 'data_uoa':'results',
-                 'skip_sort':'yes'})
+                 'module_uoa':'mm-simulator', 'data_uoa':'results'})
     if r['return']>0: return r # use standard error handling in the CK
     file_info = r['list']
     num_files = r['number']
     res = []
     selection = None
-    if num_files == 0:
-    	ck.out('No results to push')
-    elif num_files == 1:
-        for item in file_info:
-            selection = item
-            print(str(count) + ") " + item)
+
+    if int(num_files) == 0:
+    	ck.out('\nNo results to push\n\nEnter "ck run mm-simulator" to run experiment\n')
+
     else:
-        ck.out('')
-        ck.out('There is more than one result')
-        ck.out('')
-        count = 0;
-        for item in file_info:
-        	print(str(count) + ") " + item)
-        	count += 1
-        	res.append(item)
+        count = 0
+        if int(num_files) == 1:
+            for item in file_info:
+                selection = item
+                print(str(count) + ") " + item)
+        else:
+            ck.out('')
+            ck.out('There is more than one result')
+            ck.out('')
+            count = 0
+            for item in file_info:
+        	    print(str(count) + ") " + item)
+        	    count += 1
+        	    res.append(item)
 
-    y='\nSelect UOA (or press Enter for 0) '
+            y='\nSelect UOA (or press Enter for 0) '
 
-    rx=ck.inp({'text':y})
-    x=rx['string'].strip()
-    if x=='': x='0'
+            rx=ck.inp({'text':y})
+            x=rx['string'].strip()
+            if x=='': x='0'
 
-    selection = res[int(x)]
-    print("\nSelected " + selection + "\n")
+            selection = res[int(x)]
+            print("\nSelected " + selection + "\n")
 
-    r=ck.access({'action':'find','module_uoa':'mm-simulator', 'data_uoa':'results'})
-    path = r['path']
+        r=ck.access({'action':'find','module_uoa':'mm-simulator', 'data_uoa':'results'})
+        path = r['path']
 
-    file1 = open(path + "/" + selection, 'r') 
+        file1 = open(path + "/" + selection, 'r') 
 
-    for line in reversed(list(file1)):
-    	if "Standard Error" in line:
-            se = line.split()[2]
+        for line in reversed(list(file1)):
+    	    if "Standard Error" in line:
+                se = line.split()[2]
 
-    #Access run parameters
-    r=ck.access({'action':'load', 'repo_uoa':'march-madness', 'module_uoa':'program', 'data_uoa':'simulator'})
-    if r['return']>0: return r # use standard error handling in the CK
-    r_vars = r['dict']['run_vars']
+        #Access run parameters
+        r=ck.access({'action':'load', 'repo_uoa':'march-madness', 'module_uoa':'program', 'data_uoa':'simulator'})
+        if r['return']>0: return r # use standard error handling in the CK
+        r_vars = r['dict']['run_vars']
 
-    hfa = None
-    apply_scaling = None
+        hfa = None
+        apply_scaling = None
 
-    if selection == 'stdout3.log':
-    	hfa = r_vars['home_field_advantage_3']
-    	apply_scaling = r_vars['apply_scaling_3']
-    elif selection == 'stdout2.log':
-    	hfa = r_vars['home_field_advantage_2']
-    	apply_scaling = r_vars['apply_scaling_2']
-    else:
-    	hfa = r_vars['home_field_advantage_1']
-    	apply_scaling = r_vars['apply_scaling_1']
+        for num in range(int(num_files)):
+        	if selection == 'stdout' + str(num+1) + '.log':
+        		hfa = r_vars['home_field_advantage_' + str(num+1)]
+        		apply_scaling = r_vars['apply_scaling_' + str(num+1)]
 
-    os.chdir(path + "/..")
-    f = open("results.json", "w")
-    f.write('{"hfa": ' + str(hfa) + ',  "as": ' + str(apply_scaling) + ', "se": ' + se + '}')
-    f.close()
-    os.system('cb push-result mm-simulator-results --filename="results.json"')
+        os.chdir(path + "/..")
+        f = open("results.json", "w")
+        f.write('{"hfa": ' + str(hfa) + ',  "as": ' + str(apply_scaling) + ', "se": ' + se + '}')
+        f.close()
+        os.system('cb push-result mm-simulator-results --filename="results.json"')
 
     return {'return':0}
