@@ -8,7 +8,11 @@
 #include "Team.h"
 
 #ifdef XOPENME
+<<<<<<< HEAD
+  #include <xopenme.h>
+=======
 #include <xopenme.h>
+>>>>>>> 8b7c9a7f962720948d9fdd313cc2c109fb538466
 #endif
 
 int main(int argc, char *argv[])
@@ -16,7 +20,11 @@ int main(int argc, char *argv[])
 #ifdef XOPENME
   xopenme_init(1,3);
 #endif
+<<<<<<< HEAD
+
+=======
   
+>>>>>>> 8b7c9a7f962720948d9fdd313cc2c109fb538466
 char *var1 = getenv("home_field_advantage");
 char *var2 = getenv("apply_scaling");
 int home_field_advantage = std::stoi(var1);

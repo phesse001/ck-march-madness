@@ -1,6 +1,8 @@
 {
   "backup_data_uid": "2d54551a5e8bad31",
-  "build_compiler_vars": {},
+  "build_compiler_vars": {
+    "XOPENME": ""
+  },
   "compile_deps": {
     "compiler": {
       "local": "yes",
@@ -44,7 +46,6 @@
       ],
       "ignore_return_code": "no",
       "run_time": {
-        "fine_grain_timer_file": "tmp-ck-timer.json",
         "run_cmd_main": "$#BIN_FILE#$ $#dataset_path#$",
         "run_cmd_out1": "stdout.log",
         "run_cmd_out2": "stderr.log",
