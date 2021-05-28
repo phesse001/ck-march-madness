@@ -1,8 +1,5 @@
 {
   "backup_data_uid": "2d54551a5e8bad31",
-  "build_compiler_vars": {
-    "XOPENME": ""
-  },
   "compile_deps": {
     "compiler": {
       "local": "yes",
@@ -14,11 +11,6 @@
       "name": "lib-eigen-src-3.3.4-linux-64",
       "no_tags": "",
       "tags": "eigen"
-    },
-    "xopenme": {
-      "local": "yes",
-      "name": "xOpenME library",
-      "tags": "lib,xopenme"
     }
   },
   "compiler_add_include_as_env_from_deps": [
