@@ -18,7 +18,6 @@
     "CK_ENV_LIB_STDCPP_INCLUDE_EXTRA"
   ],
   "compiler_env": "CK_CXX",
-  "compiler_flags_as_env": "$<<CK_COMPILER_FLAG_CPP11>>$",
   "data_name": "simulator",
   "linker_add_lib_as_env": [
     "CK_CXX_EXTRA",
@@ -54,8 +53,7 @@
     "apply_scaling": 0,
     "apply_scaling_1": 1,
     "home_field_advantage": 0,
-    "home_field_advantage_1": 4,
-    "CT_REPEAT_MAIN": "1"
+    "home_field_advantage_1": 4
   },
   "source_files": [
     "Simulator.cpp",
